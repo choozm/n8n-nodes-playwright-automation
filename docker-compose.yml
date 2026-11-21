@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  n8n:
+  n8n-playwright:
     build: .
     container_name: n8n-playwright
     restart: unless-stopped
@@ -10,12 +8,12 @@ services:
     environment:
       - N8N_HOST=0.0.0.0
       - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - WEBHOOK_URL=http://localhost:5678/
+      - N8N_PROTOCOL=https
+      - N8N_WEBHOOK_URL=https://localhost:5678/
       - NODE_FUNCTION_ALLOW_EXTERNAL=playwright
       - N8N_COMMUNITY_PACKAGES_ENABLED=true
-      - GENERIC_TIMEZONE=UTC
-      - TZ=UTC
+      - GENERIC_TIMEZONE=Asia/Singapore
+      - TZ=Asia/Singapore
     volumes:
       - .:/app
       - /app/node_modules
