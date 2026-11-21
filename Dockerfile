@@ -2,17 +2,18 @@ FROM mcr.microsoft.com/playwright:v1.58.0-noble
 
 WORKDIR /app
 
-# Enable pnpm via corepack
-RUN corepack enable pnpm
-
 # Install n8n globally
 RUN npm install -g n8n
 
-# Copy source code (includes package.json, pnpm-lock.yaml, and any postinstall scripts)
-COPY . .
+# Copy manifests first so dependency installation is cached between source changes
+COPY package.json package-lock.json ./
 
-# Install dependencies using pnpm (without --frozen-lockfile in case lockfile is slightly outdated)
-RUN pnpm install --no-frozen-lockfile
+# --ignore-scripts: Playwright browsers are already baked into the base image,
+# and a dev dependency's preinstall hook (only-allow) rejects npm installs.
+RUN npm ci --ignore-scripts
+
+# Copy source code
+COPY . .
 
 # Copy entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/

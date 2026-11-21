@@ -24,7 +24,7 @@ export async function setStorageState(context: BrowserContext, state: StorageSta
     // Cookies are easy: context.addCookies(state.cookies).
 
     if (Array.isArray(state.cookies)) {
-        await context.addCookies(state.cookies as Array<{ name: string; value: string; url?: string; domain?: string; path?: string; expires?: number; httpOnly?: boolean; secure?: boolean; sameSite?: "Strict" | "Lax" | "None"; }>);
+        await context.addCookies(state.cookies);
     }
 
     // For localStorage, we might need to inject script.

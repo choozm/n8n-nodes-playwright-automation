@@ -20,11 +20,11 @@ export class SessionController implements IController {
                 success: true,
                 sessionId: session.id,
                 browserType: session.browserType,
-            } as ActionResult;
+            };
         } else if (operation === SessionOperation.Close) {
             const sessionId = executeFunctions.getNodeParameter('sessionId', itemIndex) as string;
             await manager.closeSession(sessionId);
-            result = { success: true, sessionId } as ActionResult;
+            result = { success: true, sessionId };
         } else if (operation === SessionOperation.GetStorageState) {
             const sessionId = executeFunctions.getNodeParameter('sessionId', itemIndex) as string;
             const session = manager.getSession(sessionId);
