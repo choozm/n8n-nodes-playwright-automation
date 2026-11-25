@@ -2,8 +2,11 @@ FROM mcr.microsoft.com/playwright:v1.58.0-noble
 
 WORKDIR /app
 
-# Install n8n globally
-RUN npm install -g n8n
+# Pin n8n: an unpinned install re-resolves `latest` whenever the build cache is
+# cold and can jump releases behind the runner's back. N8N_VERSION is also what
+# tags the images in n8n-playwright/docker-compose.yml - bump both together.
+ARG N8N_VERSION=2.48.7
+RUN npm install -g "n8n@${N8N_VERSION}" && npm ls -g n8n --depth=0
 
 # Copy manifests first so dependency installation is cached between source changes
 COPY package.json package-lock.json ./
